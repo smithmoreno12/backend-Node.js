@@ -10,7 +10,7 @@ export class CategoryRoutes {
     const controller = new CategoryController(categoryService);
 
     // Definir las rutas
-    router.get("/", controller.getCateggories);
+    router.get("/", controller.getCategories);
     router.post("/", [AuthMiddleware.validateJWT], controller.createCategory);
 
     return router;
