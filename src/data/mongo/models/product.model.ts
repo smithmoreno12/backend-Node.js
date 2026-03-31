@@ -32,5 +32,12 @@ const productSchema = new mongoose.Schema({
     required: true,
   },
 });
-
+productSchema.set("toJSON", {
+  virtuals: true,
+  versionKey: false,
+  transform: function (_, ret) {
+    const { _id, ...data } = ret;
+    return data;
+  },
+});
 export const ProductModel = mongoose.model("Product", productSchema);

@@ -24,7 +24,7 @@ export class ProductController {
     if (error) return res.status(400).json({ error });
     this.productService
       .createProduct(createProductDto!)
-      .then((product) => res.status(201).json(product))
+      .then((products) => res.status(201).json(products))
       .catch((err) => this.handleError(err, res));
   };
 
