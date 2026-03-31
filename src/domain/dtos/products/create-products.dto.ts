@@ -1,4 +1,4 @@
-export class CreateProductsDto {
+export class CreateProductDto {
   private constructor(
     public readonly name: string,
     public readonly available: boolean,
@@ -7,7 +7,7 @@ export class CreateProductsDto {
     public readonly user: string, // ID
     public readonly category: string, // ID
   ) {}
-  static create(object: { [key: string]: any }): [string?, CreateProductsDto?] {
+  static create(object: { [key: string]: any }): [string?, CreateProductDto?] {
     const { name, available, price, description, user, category } = object;
     if (!name) return ["Missing name"];
     if (!user) return ["Missing user"];
@@ -15,7 +15,7 @@ export class CreateProductsDto {
 
     return [
       undefined,
-      new CreateProductsDto(
+      new CreateProductDto(
         name,
         !!available,
         price,
