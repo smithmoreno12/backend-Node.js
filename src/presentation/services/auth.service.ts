@@ -41,22 +41,26 @@ export class AuthService {
   }
 
   public async login(loginUserDto: loginUserDto) {
-    try {
-      const user = await UserModel.findOne({ email: loginUserDto.email });
-      if (!user) throw CustomError.badRequest("Email or password is incorrect");
+    // Búsqueda fuera del try para que los errores 400 no sean tragados como 500
+    const user = await UserModel.findOne({ email: loginUserDto.email });
+    if (!user) throw CustomError.badRequest("Email or password is incorrect");
 
-      const isMatching = bcryptAdapter.compare(
-        // 👈 await
-        loginUserDto.password,
-        user.password,
+    const isMatching = bcryptAdapter.compare(
+      loginUserDto.password,
+      user.password,
+    );
+    if (!isMatching) throw CustomError.badRequest("Password is not valid");
+
+    // Verificar que el correo haya sido validado
+    if (!user.emailVerified)
+      throw CustomError.unauthorized(
+        "Email not verified. Please check your inbox.",
       );
-      if (!isMatching) throw CustomError.badRequest("Password is not valid");
 
+    try {
       const { password, ...userEntity } = UserEntity.fromObject(user);
-      const token = await JwtAdapter.generateToken({
-        id: user.id,
-      });
-      if (!token) throw CustomError.badRequest("Error while creating JWT ");
+      const token = await JwtAdapter.generateToken({ id: user.id });
+      if (!token) throw CustomError.badRequest("Error while creating JWT");
 
       return {
         user: { ...userEntity },

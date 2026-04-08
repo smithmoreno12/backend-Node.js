@@ -34,9 +34,9 @@ export class ProductService {
         page: page,
         limit: limit,
         total: total,
-        next: `/api/products?page=${page + 1}&limit${limit}`,
+        next: `/api/products?page=${page + 1}&limit=${limit}`,
         prev:
-          page - 1 > 0 ? `/api/products?page=${page - 1}&limit${limit}` : null,
+          page - 1 > 0 ? `/api/products?page=${page - 1}&limit=${limit}` : null,
         products: products,
       };
     } catch (error) {

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { ProductController } from "./controller";
-import { AuthMiddleware } from "../middlewares";
+import { AdminMiddleware, AuthMiddleware } from "../middlewares";
 import { ProductService } from "../services";
 
 export class ProductRoutes {
@@ -13,7 +13,7 @@ export class ProductRoutes {
 
     // Definir las rutas
     router.get("/", controller.getProducts);
-    router.post("/", [AuthMiddleware.validateJWT], controller.createProduct);
+    router.post("/", [AuthMiddleware.validateJWT, AdminMiddleware.validateAdminRole], controller.createProduct);
 
     return router;
   }
